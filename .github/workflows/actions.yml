@@ -19,5 +19,5 @@ jobs:
           source_dir: models # Verzeichnis, das die Artefakte enthält
           container_name: models # Name des Azure Blob Storage Containers
           connection_string: ${{ secrets.AZURE_STORAGE_ACCESSKEY }} # Verbindungszeichenfolge für Azure Blob Storage
-          extra_args: '--pattern *.params *.txt' # Muster, das auf die hochzuladenden Dateien zutrifft
+          extra_args: '--pattern "*.params" --pattern "*.txt"' # Muster, das auf die hochzuladenden Dateien zutrifft
           overwrite: 'true' # (optional) Überschreiben von vorhandenen Blobs
