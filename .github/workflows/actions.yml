@@ -20,7 +20,8 @@ jobs:
         distribution: 'adopt'
 
     - name: Compile Java Application
-      run: javac -d ./out ./src/ModelUploader.java
+      run: javac -d ./out ./src/main/java/ch/zhaw/deeplearningjava/celebclassification/ModelUploader.java
 
     - name: Run Java Application
       run: java -cp ./out ModelUploader "${{ secrets.AZURE_STORAGE_ACCESSKEY }}"
+
