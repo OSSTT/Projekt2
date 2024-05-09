@@ -10,18 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up JDK 21
-      uses: actions/setup-java@v2
-      with:
-        java-version: '21'
-        distribution: 'adopt'
+      - name: Set up JDK 21
+        uses: actions/setup-java@v2
+        with:
+          java-version: '21'
+          distribution: 'adopt'
 
-    - name: Compile Java Application
-      run: javac -d ./out ./src/main/java/ch/zhaw/deeplearningjava/celebclassification/ModelUploader.java
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
 
-    - name: Run Java Application
-      run: java -cp ./out ModelUploader "${{ secrets.AZURE_STORAGE_ACCESSKEY }}"
+      - name: Compile Java Application
+        run: javac -d ./out ./src/main/java/ch/zhaw/deeplearningjava/celebclassification/ModelUploader.java
 
+      - name: Run Java Application
+        run: java -cp ./out ModelUploader "${{ secrets.AZURE_STORAGE_ACCESSKEY }}"
