@@ -45,7 +45,7 @@ public final class Training {
         // (during training)
         // higher numbers are bad - means model performed poorly; indicates more errors;
         // want to
-        // minimize errors (loss)
+        // minimize errors (loss)test
         Loss loss = Loss.softmaxCrossEntropyLoss();
 
         // setting training parameters (ie hyperparameters)
