@@ -11,19 +11,13 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v2
+      - name: Upload to Azure Blob Storage
+        uses: bacongobbler/azure-blob-storage-upload@main
         with:
-          java-version: '21'
-          distribution: 'adopt'
-
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml
-
-      - name: Compile Java Application
-        run: javac -d ./out ./src/main/java/ch/zhaw/deeplearningjava/celebclassification/ModelUploader.java
-
-      - name: Run Java Application
-        run: java -cp ./out ModelUploader "${{ secrets.AZURE_STORAGE_ACCESSKEY }}"
+          source_dir: models # Verzeichnis, das die Artefakte enthält
+          container_name: models # Name des Azure Blob Storage Containers
+          connection_string: ${{ secrets.AZURE_STORAGE_ACCESSKEY }} # Verbindungszeichenfolge für Azure Blob Storage
+          extra_args: '--pattern *.params *.txt' # Muster, das auf die hochzuladenden Dateien zutrifft
+          overwrite: 'true' # (optional) Überschreiben von vorhandenen Blobs
