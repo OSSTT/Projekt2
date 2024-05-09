@@ -19,12 +19,8 @@ jobs:
         java-version: '21'
         distribution: 'adopt'
 
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+    - name: Compile Java Application
+      run: javac -d ./out ./src/ModelUploader.java
 
-    - name: Upload Model
-      working-directory: ./src
-      run: |
-        ModelUploader.java \
-         "${{ secrets.AZURE_STORAGE_ACCESSKEY }}" 
-
+    - name: Run Java Application
+      run: java -cp ./out ModelUploader "${{ secrets.AZURE_STORAGE_ACCESSKEY }}"
