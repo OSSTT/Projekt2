@@ -34,7 +34,6 @@ build/
 
 ### Others ###
 /celebrityFacesDataset
-/models
 /azureModels
 /config.properties
 /Config.java
