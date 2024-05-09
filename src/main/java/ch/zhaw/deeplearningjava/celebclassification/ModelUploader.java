@@ -10,7 +10,7 @@ public class ModelUploader {
 
     public static void main(String[] args) {
         String resourceGroupName = "thathjava";
-        String containerName = "models";
+        String containerName = "model";
         String accessKey = Config.getAzureStorageAccessKey();
         String modelsFolder = "models";
 

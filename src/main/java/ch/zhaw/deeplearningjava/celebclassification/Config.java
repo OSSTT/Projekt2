@@ -18,6 +18,6 @@ public class Config {
     }
 
     public static String getAzureStorageAccessKey() {
-        return properties.getProperty("azure.storage.accessKey");
+        return properties.getProperty("accessKey");
     }
 }

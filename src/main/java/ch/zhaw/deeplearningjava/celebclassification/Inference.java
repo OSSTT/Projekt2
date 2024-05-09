@@ -32,7 +32,7 @@ public class Inference {
         try {
             // Connect to Azure Blob Storage
             String resourceGroupName = "thathjava";
-            String containerName = "models";
+            String containerName = "model";
             String accessKey = Config.getAzureStorageAccessKey();
 
             BlobServiceClientBuilder serviceClientBuilder = new BlobServiceClientBuilder()
