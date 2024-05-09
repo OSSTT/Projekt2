@@ -16,7 +16,7 @@ jobs:
       - name: Upload to Azure Blob Storage
         uses: bacongobbler/azure-blob-storage-upload@main
         with:
-          source_dir: ./models # Verzeichnis, das die Artefakte enthält
+          source_dir: models # Verzeichnis, das die Artefakte enthält
           container_name: models # Name des Azure Blob Storage Containers
           connection_string: ${{ secrets.AZURE_STORAGE_ACCESSKEY }} # Verbindungszeichenfolge für Azure Blob Storage
           extra_args: '--pattern "celebclassifier-0001.params" --pattern "synset.txt"' # Muster, das auf die hochzuladenden Dateien zutrifft
