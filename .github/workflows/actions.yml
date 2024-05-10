@@ -1,36 +1,27 @@
-name: Upload Models to Azure Blob Storage
+name: Upload to Azure Blob Storage
 
 on:
   push:
     branches:
-      - main  # Dieser Workflow wird ausgelöst, wenn Änderungen in den Branch 'main' gepusht werden.
+      - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Set up Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}  # Stellen Sie sicher, dass Sie dieses Secret in Ihren GitHub Secrets hinterlegt haben.
+    - name: Upload celebclassifier-0001.params to Azure Blob Storage
+      uses: bacongobbler/azure-blob-storage-upload@v1.1.1
+      with:
+        source_file: 'models/celebclassifier-0001.params'
+        container_name: 'model'
+        connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
 
-      - name: Upload Model Files to Azure Blob Storage
-        run: |
-          az storage blob upload \
-            --account-name thathjava \
-            --container-name model \
-            --name celebclassifier-0001.params \
-            --file models/celebclassifier-0001.params \
-            --auth-mode login
-          az storage blob upload \
-            --account-name thathjava \
-            --container-name model \
-            --name synset.txt \
-            --file models/synset.txt \
-            --auth-mode login
-        env:
-          AZURE_STORAGE_ACCOUNT: thathjava
-          AZURE_STORAGE_KEY: ${{ secrets.ACCESSKEY }}  # Stellen Sie sicher, dass Sie dieses Secret in Ihren GitHub Secrets hinterlegt haben.
+    - name: Upload synset.txt to Azure Blob Storage
+      uses: bacongobbler/azure-blob-storage-upload@v1.1.1
+      with:
+        source_file: 'models/synset.txt'
+        container_name: 'model'
+        connection_string: ${{ secrets.ACCESSKEY }}
