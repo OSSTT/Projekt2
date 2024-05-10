@@ -19,4 +19,4 @@ jobs:
         container_name: 'model'
         connection_string: ${{ secrets.ACCESSKEY }}
         extra_args: '--pattern celebclassifier-0001.params --pattern synset.txt'
-        sync: true
+        overwrite: 'true'
