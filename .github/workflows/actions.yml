@@ -1,23 +1,36 @@
-name: Java CI
+name: Upload Models to Azure Blob Storage
 
 on:
   push:
     branches:
-      - main
+      - main  # Dieser Workflow wird ausgelöst, wenn Änderungen in den Branch 'main' gepusht werden.
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-      - name: Upload to Azure Blob Storage
-        uses: bacongobbler/azure-blob-storage-upload@main
+      - name: Set up Azure CLI
+        uses: azure/login@v1
         with:
-          source_dir: models # Verzeichnis, das die Artefakte enthält
-          container_name: model # Name des Azure Blob Storage Containers
-          connection_string: ${{ secrets.accessKey }} # Verbindungszeichenfolge für Azure Blob Storage
-          extra_args: '--pattern "celebclassifier-0001.params" --pattern "synset.txt"' # Muster, das auf die hochzuladenden Dateien zutrifft
-          overwrite: 'false' # (optional) Überschreiben von vorhandenen Blobs
+          creds: ${{ secrets.AZURE_CREDENTIALS }}  # Stellen Sie sicher, dass Sie dieses Secret in Ihren GitHub Secrets hinterlegt haben.
+
+      - name: Upload Model Files to Azure Blob Storage
+        run: |
+          az storage blob upload \
+            --account-name thathjava \
+            --container-name model \
+            --name celebclassifier-0001.params \
+            --file models/celebclassifier-0001.params \
+            --auth-mode login
+          az storage blob upload \
+            --account-name thathjava \
+            --container-name model \
+            --name synset.txt \
+            --file models/synset.txt \
+            --auth-mode login
+        env:
+          AZURE_STORAGE_ACCOUNT: thathjava
+          AZURE_STORAGE_KEY: ${{ secrets.ACCESSKEY }}  # Stellen Sie sicher, dass Sie dieses Secret in Ihren GitHub Secrets hinterlegt haben.
