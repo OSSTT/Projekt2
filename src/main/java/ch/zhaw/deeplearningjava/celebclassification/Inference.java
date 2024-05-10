@@ -30,6 +30,7 @@ public class Inference {
     private static final String MODEL_DIRECTORY = "azureModels";
     private static final String PARAMS_FILE = "celebclassifier-0001.params";
     private static final String SYNSET_FILE = "synset.txt";
+    private static final String TRAINING_RESULTS_FILE = "training_results.json";
 
     private Predictor<Image, Classifications> predictor;
 
@@ -71,18 +72,28 @@ public class Inference {
             String accessKey = System.getenv("AZURE_STORAGE_ACCESS_KEY");
 
             BlobServiceClientBuilder serviceClientBuilder = new BlobServiceClientBuilder()
-                    .connectionString("DefaultEndpointsProtocol=https;AccountName=" + resourceGroupName + ";AccountKey=" + accessKey + ";EndpointSuffix=core.windows.net");
-            BlobContainerClient blobContainerClient = serviceClientBuilder.buildClient().getBlobContainerClient(containerName);
+                    .connectionString("DefaultEndpointsProtocol=https;AccountName=" + resourceGroupName + ";AccountKey="
+                            + accessKey + ";EndpointSuffix=core.windows.net");
+            BlobContainerClient blobContainerClient = serviceClientBuilder.buildClient()
+                    .getBlobContainerClient(containerName);
 
             // Download the model files from Azure Blob Storage
             downloadModelFile(blobContainerClient, PARAMS_FILE, MODEL_DIRECTORY);
             downloadModelFile(blobContainerClient, SYNSET_FILE, MODEL_DIRECTORY);
+
+            // Download the training results file
+            downloadTrainingResultsFile(blobContainerClient, TRAINING_RESULTS_FILE, MODEL_DIRECTORY);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void downloadModelFile(BlobContainerClient containerClient, String fileName, String targetDirectory) {
+        BlobClient blobClient = containerClient.getBlobClient(fileName);
+        blobClient.downloadToFile(targetDirectory + "/" + fileName);
+    }
+
+    private void downloadTrainingResultsFile(BlobContainerClient containerClient, String fileName, String targetDirectory) {
         BlobClient blobClient = containerClient.getBlobClient(fileName);
         blobClient.downloadToFile(targetDirectory + "/" + fileName);
     }

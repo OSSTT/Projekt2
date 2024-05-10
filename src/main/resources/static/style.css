@@ -1,0 +1,67 @@
+.navbar-brand {
+    color: #000000; /* Ändere die Farbe des Navbar-Logos auf Schwarz */
+    font-weight: bold; /* Mache den Text fett */
+    border: none; /* Entferne den Rahmen */
+}
+
+body {
+    margin-top: 50px; /* Verschiebe den Body nach unten */
+    font-family: Arial, sans-serif; /* Ändere die Schriftart */
+    background-color: #f8f9fa; /* Ändere die Hintergrundfarbe */
+}
+
+.container-fluid {
+    margin-top: 20px; /* Füge etwas Abstand unter dem Header hinzu */
+    background-color: #ffffff; /* Ändere die Hintergrundfarbe des Container */
+    padding: 20px; /* Füge Innenabstand hinzu */
+    border-radius: 10px; /* Runde die Ecken des Containers ab */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Füge einen leichten Schatten hinzu */
+}
+
+.title {
+    color: #007bff; /* Ändere die Farbe des Titels */
+    text-align: center; /* Zentriere den Titel */
+    margin-bottom: 20px; /* Füge etwas Abstand unter dem Titel hinzu */
+}
+
+.form-group {
+    margin-bottom: 20px; /* Füge etwas Abstand unter dem Formular hinzu */
+}
+
+.form-control-file {
+    background-color: #ffffff; /* Ändere die Hintergrundfarbe des Datei-Eingabefelds */
+    border: 1px solid #ced4da; /* Füge einen Rahmen hinzu */
+    padding: 10px; /* Füge Innenabstand hinzu */
+    border-radius: 5px; /* Runde die Ecken des Eingabefelds ab */
+}
+
+#answerPart {
+    margin-top: 20px; /* Füge etwas Abstand über der Antwort hinzu */
+    visibility: hidden; /* Verstecke den Antwortbereich standardmäßig */
+}
+
+/* Animation für den Antwortbereich */
+#answerPart.show {
+    visibility: visible;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Stil für den Vorschau-Bereich */
+#previewPart {
+    text-align: center; /* Zentriere den Vorschau-Bereich */
+}
+
+#preview {
+    border-radius: 5px; /* Runde die Ecken des Bildes ab */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Füge einen leichten Schatten hinzu */
+    margin-top: 20px; /* Füge etwas Abstand über dem Bild hinzu */
+}
