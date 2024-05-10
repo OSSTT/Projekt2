@@ -12,16 +12,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Upload celebclassifier-0001.params to Azure Blob Storage
+    - name: Upload files to Azure Blob Storage
       uses: bacongobbler/azure-blob-storage-upload@main
       with:
-        source_file: 'models/celebclassifier-0001.params'
+        source_dir: 'models'
         container_name: 'model'
         connection_string: ${{ secrets.ACCESSKEY }}
-
-    - name: Upload synset.txt to Azure Blob Storage
-      uses: bacongobbler/azure-blob-storage-upload@main
-      with:
-        source_file: 'models/synset.txt'
-        container_name: 'model'
-        connection_string: ${{ secrets.ACCESSKEY }}
+        extra_args: '--pattern celebclassifier-0001.params --pattern synset.txt'
+        sync: true
