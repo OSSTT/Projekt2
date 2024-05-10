@@ -16,6 +16,10 @@ import ai.djl.training.evaluator.Accuracy;
 import ai.djl.training.listener.TrainingListener;
 import ai.djl.training.loss.Loss;
 import ai.djl.translate.TranslateException;
+import com.google.gson.Gson;
+import java.io.FileWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -35,7 +39,6 @@ public final class Training {
         Path modelDir = Paths.get("models");
 
         // create ImageFolder dataset from directory
-        // ImageFolder dataset = initDataset("ut-zap50k-images-square");
         ImageFolder dataset = initDataset("celebrityFacesDataset");
         // Split the dataset set into training dataset and validate dataset
         RandomAccessDataset[] datasets = dataset.randomSplit(8, 2);
@@ -72,13 +75,20 @@ public final class Training {
         model.setProperty("Loss", String.format("%.5f", result.getValidateLoss()));
 
         // save the model after done training for inference later
-        // model saved as shoeclassifier-0000.params
+        // model saved as celebclassifier-0000.params
         model.save(modelDir, Models.MODEL_NAME);
 
         // save labels into model directory
         Models.saveSynset(modelDir, dataset.getSynset());
 
+         // Save training results as JSON
+         saveTrainingResults(modelDir.resolve("training_results.json"), BATCH_SIZE, EPOCHS, result.getValidateEvaluation("Accuracy"), result.getValidateLoss());
+
     }
+
+
+
+
 
     private static ImageFolder initDataset(String datasetRoot)
             throws IOException, TranslateException {
@@ -101,4 +111,22 @@ public final class Training {
                 .addEvaluator(new Accuracy())
                 .addTrainingListeners(TrainingListener.Defaults.logging());
     }
+
+
+    private static void saveTrainingResults(Path filePath, int batchSize, int epochs, double accuracy, double loss) throws IOException {
+        Map<String, Object> results = new HashMap<>();
+        results.put("Batch_Size", batchSize);
+        results.put("Epochs", epochs);
+        results.put("Accuracy", accuracy);
+        results.put("Loss", loss);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(results);
+
+        try (FileWriter writer = new FileWriter(filePath.toString())) {
+            writer.write(json);
+        }
+    }
+
+
 }

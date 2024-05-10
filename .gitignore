@@ -37,3 +37,4 @@ build/
 /azureModels
 /config.properties
 /Config.java
+/ModelUploader.java

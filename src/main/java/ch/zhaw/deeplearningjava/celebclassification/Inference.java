@@ -17,6 +17,7 @@ import com.azure.storage.blob.BlobServiceClientBuilder;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -26,26 +27,21 @@ import javax.imageio.ImageIO;
 
 public class Inference {
 
-    Predictor<Image, Classifications> predictor;
+    private static final String MODEL_DIRECTORY = "azureModels";
+    private static final String PARAMS_FILE = "celebclassifier-0001.params";
+    private static final String SYNSET_FILE = "synset.txt";
+
+    private Predictor<Image, Classifications> predictor;
 
     public Inference() {
         try {
-            // Connect to Azure Blob Storage
-            String resourceGroupName = "thathjava";
-            String containerName = "model";
-            String accessKey = Config.getAzureStorageAccessKey();
-
-            BlobServiceClientBuilder serviceClientBuilder = new BlobServiceClientBuilder()
-                .connectionString("DefaultEndpointsProtocol=https;AccountName=" + resourceGroupName + ";AccountKey=" + accessKey + ";EndpointSuffix=core.windows.net");
-            BlobContainerClient blobContainerClient = serviceClientBuilder.buildClient().getBlobContainerClient(containerName);
-
-            // Download the model files from Azure Blob Storage
-            downloadModelFile(blobContainerClient, "celebclassifier-0001.params", "azureModels");
-            downloadModelFile(blobContainerClient, "synset.txt", "azureModels");
+            if (!modelFilesExist()) {
+                downloadModelFiles();
+            }
 
             // Load the model from the downloaded files
             Model model = Models.getModel();
-            Path modelDir = Paths.get("azureModels");
+            Path modelDir = Paths.get(MODEL_DIRECTORY);
             model.load(modelDir);
 
             // Define a translator for pre and post processing
@@ -56,6 +52,31 @@ public class Inference {
                     .build();
             predictor = model.newPredictor(translator);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean modelFilesExist() {
+        File paramsFile = new File(MODEL_DIRECTORY, PARAMS_FILE);
+        File synsetFile = new File(MODEL_DIRECTORY, SYNSET_FILE);
+        return paramsFile.exists() && synsetFile.exists();
+    }
+
+    private void downloadModelFiles() {
+        try {
+            // Connect to Azure Blob Storage
+            String resourceGroupName = "thathjava";
+            String containerName = "model";
+            String accessKey = System.getenv("AZURE_STORAGE_ACCESS_KEY");
+
+            BlobServiceClientBuilder serviceClientBuilder = new BlobServiceClientBuilder()
+                    .connectionString("DefaultEndpointsProtocol=https;AccountName=" + resourceGroupName + ";AccountKey=" + accessKey + ";EndpointSuffix=core.windows.net");
+            BlobContainerClient blobContainerClient = serviceClientBuilder.buildClient().getBlobContainerClient(containerName);
+
+            // Download the model files from Azure Blob Storage
+            downloadModelFile(blobContainerClient, PARAMS_FILE, MODEL_DIRECTORY);
+            downloadModelFile(blobContainerClient, SYNSET_FILE, MODEL_DIRECTORY);
         } catch (Exception e) {
             e.printStackTrace();
         }
