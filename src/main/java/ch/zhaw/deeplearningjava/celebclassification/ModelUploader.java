@@ -14,7 +14,7 @@ public class ModelUploader {
         String accessKey = Config.getAzureStorageAccessKey();
         String modelsFolder = "models";
 
-        uploadFile(resourceGroupName, containerName, accessKey, modelsFolder, "celebclassifier-0001.params");
+        uploadFile(resourceGroupName, containerName, accessKey, modelsFolder, "celebclassifier-0032.params");
         uploadFile(resourceGroupName, containerName, accessKey, modelsFolder, "synset.txt");
     }
 

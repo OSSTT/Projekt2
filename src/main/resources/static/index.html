@@ -15,21 +15,21 @@
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Projekt 2</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                </ul>
-            </div>
+          <a class="navbar-brand" href="#">Projekt 2</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+            </ul>
+          </div>
         </div>
-    </nav>
+      </nav>
 
 
     <div class="container-fluid">
         <h1 class="title">Celebrities Classification</h1>
-
+        
 
         <form>
             <div class="form-group">
@@ -48,8 +48,25 @@
             <p><img id="preview" width="300" src="#" alt="preview" /></p>
             </p>
         </div>
+
+        <!-- Button zum Abrufen der JSON-Daten -->
+        <button type="button" class="btn btn-primary" onclick="fetchTrainingResults()">Training Results anzeigen</button>
+        <div id="trainingResults"></div> <!-- Hier werden die JSON-Daten angezeigt -->
+
     </div>
 
+    <!-- JavaScript-Code zum Abrufen und Anzeigen der JSON-Daten -->
+    <script>
+        function fetchTrainingResults() {
+            fetch('/training_result')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data); // Hier kannst du die Daten anzeigen oder weiterverarbeiten
+                    document.getElementById('trainingResults').innerHTML = "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+                })
+                .catch(error => console.error('Error fetching training results:', error));
+        }
+    </script>
 
 </body>
 

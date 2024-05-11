@@ -46,3 +46,4 @@ function checkFiles(files) {
     );
 
 }
+
