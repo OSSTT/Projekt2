@@ -28,7 +28,7 @@ import javax.imageio.ImageIO;
 public class Inference {
 
     private static final String MODEL_DIRECTORY = "azureModels";
-    private static final String STATS_DIRECTORY = "src\\main\\java\\ch\\zhaw\\deeplearningjava\\celebclassification\\stats";
+    private static final String STATS_DIRECTORY = "stats";
     private static final String PARAMS_FILE = "celebclassifier-0032.params";
     private static final String SYNSET_FILE = "synset.txt";
     private static final String TRAINING_RESULTS_FILE = "training_results.json";

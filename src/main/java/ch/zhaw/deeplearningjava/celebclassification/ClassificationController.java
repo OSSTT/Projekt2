@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import org.springframework.util.StreamUtils;
+import java.io.FileInputStream;
+import java.io.File;
 
 
 @RestController
@@ -38,21 +40,23 @@ public class ClassificationController {
     }
 
     @GetMapping("/training_result")
-public ResponseEntity<String> getTrainingResultJson() throws IOException {
-    // Pfad zur Datei training_result.json
-    InputStream inputStream = getClass().getResourceAsStream("/ch/zhaw/deeplearningjava/celebclassification/stats/training_results.json");
+    public ResponseEntity<String> getTrainingResultJson() throws IOException {
+        // Pfad zur Datei training_result.json
+        String filePath = "/usr/src/app/stats/training_results.json";
+        File file = new File(filePath);
 
-    if (inputStream == null) {
-        throw new FileNotFoundException("File training_results.json not found");
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            // Lese den Inhalt der Datei
+            String fileContent = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
+
+            // Baue die Antwort und gebe den Dateiinhalt mit dem entsprechenden Mediatyp zurück
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(fileContent);
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException("File training_results.json not found");
+        }
     }
-
-    // Lese den Inhalt der Datei
-    String fileContent = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
-
-    // Baue die Antwort und gebe den Dateiinhalt mit dem entsprechenden Mediatyp zurück
-    return ResponseEntity.ok()
-            .contentType(MediaType.APPLICATION_JSON)
-            .body(fileContent);
-}
     
 }

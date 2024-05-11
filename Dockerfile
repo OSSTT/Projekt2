@@ -11,6 +11,8 @@ WORKDIR /usr/src/app
 
 COPY --from=build /usr/src/app/target/celebclassification-0.0.1-SNAPSHOT.jar .
 COPY azureModels /usr/src/app/azureModels
+COPY src/main/java/ch/zhaw/deeplearningjava/celebclassification/stats /usr/src/app/stats
+
 
 EXPOSE 8082
 CMD ["java","-jar","celebclassification-0.0.1-SNAPSHOT.jar"]
