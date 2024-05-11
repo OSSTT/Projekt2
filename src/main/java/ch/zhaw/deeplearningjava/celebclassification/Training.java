@@ -75,7 +75,7 @@ public final class Training {
         model.setProperty("Loss", String.format("%.5f", result.getValidateLoss()));
 
         // save the model after done training for inference later
-        // model saved as celebclassifier-0000.params
+        // model saved as celebclassifier-0032.params
         model.save(modelDir, Models.MODEL_NAME);
 
         // save labels into model directory
@@ -85,9 +85,6 @@ public final class Training {
          saveTrainingResults(modelDir.resolve("training_results.json"), BATCH_SIZE, EPOCHS, result.getValidateEvaluation("Accuracy"), result.getValidateLoss());
 
     }
-
-
-
 
 
     private static ImageFolder initDataset(String datasetRoot)
